@@ -1,7 +1,38 @@
 ﻿services:
-  tasklistapi:
-    image: tasklistapi
+  api:
+    container_name: tasklist-api
     build:
       context: .
       dockerfile: TaskListApi/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      Mongo__ConnectionString: mongodb://admin:admin@mongo:27017/
+      Mongo__DatabaseName: TaskListDb
+      Mongo__Collections__TaskLists: "TaskLists"
+    ports:
+        - "5000:8080"
+    depends_on:
+      - mongo
+    networks:
+      - tasklist-network
+        
+  mongo:
+    image: mongo:7.0
+    container_name: tasklist-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - tasklist-network
 
+volumes:
+  mongo-data:
+    
+networks:
+  tasklist-network:
