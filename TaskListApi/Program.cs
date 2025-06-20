@@ -24,6 +24,8 @@ public class Program
             app.MapOpenApi();
         }
 
+        app.UseExceptionHandling();
+        
         app.UseHttpsRedirection();
 
         app.MapControllers();
