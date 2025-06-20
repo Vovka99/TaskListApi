@@ -10,20 +10,7 @@ namespace TaskListApi.Controllers;
 [Route("api/[controller]")]
 public class TaskListController(ITaskListService taskListService) : ControllerBase
 {
-    private Guid CurrentUserId
-    {
-        get
-        {
-            if (!HttpContext.Request.Headers.TryGetValue("X-User-Id", out var headerValue) ||
-                !Guid.TryParse(headerValue, out var userId) ||
-                userId == Guid.Empty)
-            {
-                throw new UnauthorizedAccessException("Missing or invalid X-User-Id header.");
-            }
-
-            return userId;
-        }
-    }
+    private Guid CurrentUserId => (Guid)HttpContext.Items["UserId"]!;
 
     [HttpPost("{name}")]
     public async Task<ActionResult<TaskListDto>> Create([Required] [Length(1, 255)] string name, CancellationToken ct)

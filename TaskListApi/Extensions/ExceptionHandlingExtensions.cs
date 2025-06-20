@@ -1,6 +1,6 @@
 using TaskListApi.Middlewares;
 
-namespace TaskListApi;
+namespace TaskListApi.Extensions;
 
 public static class ExceptionHandlingExtensions
 {

@@ -1,3 +1,4 @@
+using TaskListApi.Extensions;
 using TaskListApi.Services;
 using TaskListApi.Services.Impl;
 
@@ -25,6 +26,7 @@ public class Program
         }
 
         app.UseExceptionHandling();
+        app.UseCurrentUser();
         
         app.UseHttpsRedirection();
 

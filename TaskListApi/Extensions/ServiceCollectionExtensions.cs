@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using TaskListApi.Repositories;
 
-namespace TaskListApi;
+namespace TaskListApi.Extensions;
 
 public static class ServiceCollectionExtensions
 {
