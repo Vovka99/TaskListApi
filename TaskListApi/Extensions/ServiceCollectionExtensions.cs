@@ -21,14 +21,16 @@ public static class ServiceCollectionExtensions
             return new MongoClient(options.ConnectionString);
         });
 
-        services.AddScoped<IMongoDatabase>(sp =>
+        services.AddSingleton<IMongoDatabase>(sp =>
         {
-            var opts = sp.GetRequiredService<IOptions<MongoOptions>>().Value;
-            return sp.GetRequiredService<IMongoClient>().GetDatabase(opts.Database);
+            var options = sp.GetRequiredService<IOptions<MongoOptions>>().Value;
+            return sp.GetRequiredService<IMongoClient>().GetDatabase(options.Database);
         });
-
+        
         services.AddScoped<ITaskListRepository, MongoTaskListRepository>();
 
+        services.AddHostedService<MongoIndexHostedService>();
+        
         return services;
     }
 }
