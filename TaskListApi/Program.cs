@@ -1,3 +1,6 @@
+using TaskListApi.Services;
+using TaskListApi.Services.Impl;
+
 namespace TaskListApi;
 
 public class Program
@@ -11,6 +14,8 @@ public class Program
 
         builder.Services.AddMongo(builder.Configuration);
         
+        builder.Services.AddScoped<ITaskListService, TaskListService>();
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
