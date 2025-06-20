@@ -65,7 +65,8 @@ public class TaskListService(ITaskListRepository repo) : ITaskListService
 
     public async Task ShareAsync(Guid listId, Guid userId, Guid targetUserId, CancellationToken ct)
     {
-        await repo.AddShareAsync(listId, userId, targetUserId, ct);
+        if (!await repo.AddShareAsync(listId, userId, targetUserId, ct))
+            throw new ForbiddenOrNotFound();
     }
 
     public async Task<IReadOnlyList<ShareInfoDto>> GetSharesAsync(Guid listId, Guid userId, CancellationToken ct)
@@ -76,9 +77,10 @@ public class TaskListService(ITaskListRepository repo) : ITaskListService
 
     public async Task RemoveShareAsync(Guid listId, Guid userId, Guid targetUserId, CancellationToken ct)
     {
-        await repo.RemoveShareAsync(listId, userId, targetUserId, ct);
+        if (!await repo.RemoveShareAsync(listId, userId, targetUserId, ct))
+            throw new ForbiddenOrNotFound();
     }
-    
+
     private static string ValidateAndTrimName(string? name)
     {
         if (string.IsNullOrWhiteSpace(name))
