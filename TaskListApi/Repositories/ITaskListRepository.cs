@@ -14,5 +14,5 @@ public interface ITaskListRepository
 
     Task<bool> AddShareAsync(Guid id, Guid userId, Guid targetId, CancellationToken ct);
     Task<bool> RemoveShareAsync(Guid id, Guid userId, Guid targetId, CancellationToken ct);
-    Task<IReadOnlyCollection<Guid>> ListSharesAsync(Guid id, Guid userId, CancellationToken ct);
+    Task<IReadOnlyList<Guid>> ListSharesAsync(Guid id, Guid userId, CancellationToken ct);
 }

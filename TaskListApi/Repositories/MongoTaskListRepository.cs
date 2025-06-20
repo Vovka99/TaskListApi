@@ -72,7 +72,7 @@ public class MongoTaskListRepository : ITaskListRepository
         return res.ModifiedCount == 1;
     }
 
-    public async Task<IReadOnlyCollection<Guid>> ListSharesAsync(Guid id, Guid userId, CancellationToken ct)
+    public async Task<IReadOnlyList<Guid>> ListSharesAsync(Guid id, Guid userId, CancellationToken ct)
     {
         var list = await GetAccessibleAsync(id, userId, ct);
         return list?.SharedWithUserIds ?? [];
