@@ -12,17 +12,17 @@ public class TaskListController(ITaskListService taskListService) : ControllerBa
 {
     private Guid CurrentUserId => (Guid)HttpContext.Items["UserId"]!;
 
-    [HttpPost("{name}")]
-    public async Task<ActionResult<TaskListDto>> Create([Required, Length(1, 255)] string name, CancellationToken ct)
+    [HttpPost]
+    public async Task<ActionResult<TaskListDto>> Create(TaskListCreateDto dto, CancellationToken ct)
     {
-        var taskList = await taskListService.CreateAsync(name, CurrentUserId, ct);
+        var taskList = await taskListService.CreateAsync(dto.Name, CurrentUserId, ct);
         return Ok(taskList);
     }
     
-    [HttpPut("{id:guid}/{name}")]
-    public async Task<ActionResult> Update(Guid id, [Required, Length(1, 255)] string name, CancellationToken ct)
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult> Update(Guid id, TaskListUpdateDto dto, CancellationToken ct)
     {
-        await taskListService.UpdateAsync(id, name, CurrentUserId, ct);
+        await taskListService.UpdateAsync(id, dto.Name, CurrentUserId, ct);
         return NoContent();
     }
 
