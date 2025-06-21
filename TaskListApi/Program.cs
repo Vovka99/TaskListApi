@@ -2,36 +2,30 @@ using TaskListApi.Extensions;
 using TaskListApi.Services;
 using TaskListApi.Services.Impl;
 
-namespace TaskListApi;
+var builder = WebApplication.CreateBuilder(args);
 
-public class Program
+// Add services to the container.
+
+builder.Services.AddControllers();
+builder.Services.AddSwaggerWithAuthorize();
+builder.Services.AddMongo(builder.Configuration);
+
+builder.Services.AddScoped<ITaskListService, TaskListService>();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    public static void Main(string[] args)
-    {
-        var builder = WebApplication.CreateBuilder(args);
-
-        builder.Services.AddControllers();
-        builder.Services.AddOpenApi();
-
-        builder.Services.AddMongo(builder.Configuration);
-        
-        builder.Services.AddScoped<ITaskListService, TaskListService>();
-
-        var app = builder.Build();
-
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapOpenApi();
-        }
-
-        app.UseExceptionHandling();
-        app.UseCurrentUser();
-        
-        app.UseHttpsRedirection();
-
-        app.MapControllers();
-
-        app.Run();
-    }
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseExceptionHandling();
+app.UseCurrentUser();
+
+app.UseHttpsRedirection();
+
+app.MapControllers();
+
+app.Run();
